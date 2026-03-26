@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@nowait/web/*": ["apps/web/*"]
+    }
+  },
+  "exclude": ["node_modules", "**/node_modules"]
+}

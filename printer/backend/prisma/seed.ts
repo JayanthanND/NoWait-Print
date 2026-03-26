@@ -96,7 +96,7 @@ async function main() {
         if (existingType) {
             await prisma.paperType.update({
                 where: { id: existingType.id },
-                data: { prices: type.price }
+                data: { price: type.price }
             });
         } else {
             await prisma.paperType.create({ data: type });

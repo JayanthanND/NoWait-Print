@@ -1,0 +1,19 @@
+{
+  "name": "nowait-print-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=@nowait/web",
+    "build": "npm run build --workspace=@nowait/web",
+    "start": "npm run start --workspace=@nowait/web",
+    "lint": "npm run lint --workspace=@nowait/web"
+  },
+  "dependencies": {
+    "completion": "^1.0.3",
+    "h": "^1.0.0",
+    "progress": "^2.0.3",
+    "status": "^0.0.13"
+  }
+}
