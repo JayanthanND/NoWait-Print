@@ -22,6 +22,7 @@ import {
   FileText,
   BookOpen,
   CreditCard,
+  Clock,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -88,9 +89,9 @@ export function OrdersTable({ orders, onViewOrder, onUpdateStatus }: OrdersTable
         </thead>
         <tbody className="divide-y divide-border/50">
           {orders.map((order) => {
-            const status = statusConfig[order.status];
-            const paymentStatus = paymentStatusConfig[order.paymentStatus];
-            const binding = bindingConfig[order.bindingType];
+            const status = statusConfig[order.status] || statusConfig.pending;
+            const paymentStatus = paymentStatusConfig[order.paymentStatus] || paymentStatusConfig.pending;
+            const binding = bindingConfig[order.bindingType] || bindingConfig.none;
             const isSelected = selectedOrders.includes(order.id);
 
             return (
@@ -220,26 +221,58 @@ export function OrdersTable({ orders, onViewOrder, onUpdateStatus }: OrdersTable
                         <Eye className="mr-2 h-4 w-4" />
                         View Details
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Printer className="mr-2 h-4 w-4" />
-                        Assign Printer
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <CreditCard className="mr-2 h-4 w-4" />
-                        Update Payment
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem onClick={() => onUpdateStatus(order.id, "ready")}>
-                        <CheckCircle className="mr-2 h-4 w-4" />
-                        Mark Ready
-                      </DropdownMenuItem>
-                      <DropdownMenuItem 
-                        className="text-destructive focus:text-destructive"
-                        onClick={() => onUpdateStatus(order.id, "cancelled")}
-                      >
-                        <XCircle className="mr-2 h-4 w-4" />
-                        Cancel Order
-                      </DropdownMenuItem>
+                      
+                      {order.status !== "completed" && order.status !== "cancelled" && (
+                        <>
+                          <DropdownMenuItem>
+                            <Printer className="mr-2 h-4 w-4" />
+                            Assign Printer
+                          </DropdownMenuItem>
+                          <DropdownMenuItem>
+                            <CreditCard className="mr-2 h-4 w-4" />
+                            Update Payment
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                        </>
+                      )}
+
+                      {order.status === "pending" && (
+                        <DropdownMenuItem onClick={() => onUpdateStatus(order.id, "processing")}>
+                          <Clock className="mr-2 h-4 w-4" />
+                          Start Processing
+                        </DropdownMenuItem>
+                      )}
+                      
+                      {order.status === "processing" && (
+                        <DropdownMenuItem onClick={() => onUpdateStatus(order.id, "printing")}>
+                          <Printer className="mr-2 h-4 w-4" />
+                          Start Printing
+                        </DropdownMenuItem>
+                      )}
+
+                      {order.status === "printing" && (
+                        <DropdownMenuItem onClick={() => onUpdateStatus(order.id, "ready")}>
+                          <CheckCircle className="mr-2 h-4 w-4" />
+                          Mark Ready
+                        </DropdownMenuItem>
+                      )}
+
+                      {order.status === "ready" && (
+                        <DropdownMenuItem onClick={() => onUpdateStatus(order.id, "completed")}>
+                          <CheckCircle className="mr-2 h-4 w-4 text-success" />
+                          Complete Order
+                        </DropdownMenuItem>
+                      )}
+
+                      {order.status !== "completed" && order.status !== "cancelled" && (
+                        <DropdownMenuItem
+                          className="text-destructive focus:text-destructive"
+                          onClick={() => onUpdateStatus(order.id, "cancelled")}
+                        >
+                          <XCircle className="mr-2 h-4 w-4" />
+                          Cancel Order
+                        </DropdownMenuItem>
+                      )}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </td>

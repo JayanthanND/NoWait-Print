@@ -1,3 +1,5 @@
+"use client";
+
 import { Upload, File, X } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useRef } from "react";

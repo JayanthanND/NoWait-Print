@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { Phone, Printer } from "lucide-react";
 import { Button } from "../Button";

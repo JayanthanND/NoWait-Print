@@ -4,6 +4,7 @@ import { OrdersChart } from "@/components/admin/dashboard/orders-chart";
 import { PrinterStatus } from "@/components/admin/dashboard/printer-status";
 import { AlertsCard } from "@/components/admin/dashboard/alerts-card";
 import { RecentOrders } from "@/components/admin/dashboard/recent-orders";
+import { ShareShopCard } from "@/components/admin/dashboard/share-shop-card";
 import { createClient } from "@/lib/supabase/server";
 import { 
   getDashboardStats, 
@@ -43,6 +44,9 @@ export default async function DashboardPage() {
 
         {/* KPI Cards */}
         <KpiCards initialStats={stats} />
+
+        {/* Share Shop QR Card */}
+        <ShareShopCard shopName={shop.name} shopSlug={shop.slug || shop.id} />
 
         {/* Charts and Status Row */}
         <div className="grid gap-6 lg:grid-cols-3">

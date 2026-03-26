@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { WelcomeScreen } from "./screens/WelcomeScreen";
 import { WorkBuilderScreen } from "./screens/WorkBuilderScreen";
@@ -16,6 +18,7 @@ export default function App({
   shopAddress, 
   shopPhone,
   shopSettings,
+  upiId,
   initialPricingRules = [],
   initialBindingOptions = []
 }: { 
@@ -24,6 +27,7 @@ export default function App({
   shopAddress?: string;
   shopPhone?: string;
   shopSettings?: any;
+  upiId?: string;
   initialPricingRules?: any[];
   initialBindingOptions?: any[];
 }) {
@@ -229,7 +233,7 @@ export default function App({
           onSuccess={handlePaymentSuccess}
           onFailure={handlePaymentFailure}
           shopName={shopName}
-          upiId={shopSettings?.upi_id || "payment@nowait"}
+          upiId={upiId || shopSettings?.upi_id || "payment@nowait"}
         />
       )}
 

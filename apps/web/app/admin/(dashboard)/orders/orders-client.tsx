@@ -62,6 +62,7 @@ export function OrdersClient({ shopId }: { shopId: string }) {
                 paperSize: work.page_size as "A4" | "A3" | "Letter" | "Legal",
                 orientation: "portrait", 
                 doubleSided: work.print_side === "DOUBLE",
+                filePath: file.file_path,
               });
             });
           });
@@ -98,10 +99,10 @@ export function OrdersClient({ shopId }: { shopId: string }) {
 
   const handleUpdateStatus = async (orderId: string, newStatus: string) => {
     try {
-      await updateOrderStatus(orderId, newStatus.toUpperCase());
-      setOrders((prev: Order[]) => prev.map(o => o.id === orderId ? { ...o, status: newStatus as OrderStatus } : o));
+      await updateOrderStatus(orderId, newStatus.toLowerCase());
+      setOrders((prev: Order[]) => prev.map(o => o.id === orderId ? { ...o, status: newStatus.toLowerCase() as OrderStatus } : o));
       if (selectedOrder?.id === orderId) {
-        setSelectedOrder((prev: Order | null) => prev ? { ...prev, status: newStatus as OrderStatus } : null);
+        setSelectedOrder((prev: Order | null) => prev ? { ...prev, status: newStatus.toLowerCase() as OrderStatus } : null);
       }
       toast.success(`Order status updated to ${newStatus}`);
     } catch (err) {

@@ -13,8 +13,8 @@ export async function POST(request: Request) {
         shop_id: shopId || (await supabase.from('shops').select('id').limit(1).single()).data?.id,
         mobile,
         total_amount: totalAmount,
-        status: 'PENDING',
-        payment_status: paymentMethod === 'upi' ? 'PAID' : 'UNPAID'
+        status: 'pending',
+        payment_status: paymentMethod === 'upi' ? 'paid' : 'pending'
       })
       .select('id')
       .single();

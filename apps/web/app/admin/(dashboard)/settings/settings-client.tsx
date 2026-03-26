@@ -329,30 +329,49 @@ export function SettingsClient({ shopData }: { shopData: any }) {
               <CardTitle className="text-base">QR Code Management</CardTitle>
             </div>
             <CardDescription>
-              Manage your shop&apos;s customer QR code
+              Scan this code or share the link to receive print orders
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-col items-center rounded-lg border border-border bg-muted/30 p-6">
-              <div className="flex h-48 w-48 items-center justify-center rounded-lg bg-card border border-border">
-                <div className="p-4 bg-white rounded">
-                  {/* Placeholder for QR Code - In a real app we'd use a QR library */}
-                  <QrCode className="h-32 w-32 text-black" />
-                </div>
+              <div className="flex h-48 w-48 items-center justify-center rounded-lg bg-white border border-border shadow-sm overflow-hidden p-2">
+                <img 
+                  src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
+                    `${typeof window !== 'undefined' ? window.location.origin : ''}/s/${shopData.slug || shopData.id}`
+                  )}`} 
+                  alt="Shop QR Code"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <p className="mt-4 text-sm font-medium text-foreground">
                 {shopInfo.name}
               </p>
-              <p className="text-xs text-muted-foreground">Store #{shopInfo.storeId.substring(0, 8)}</p>
+              <p className="text-xs text-muted-foreground truncate max-w-full px-4">
+                {typeof window !== 'undefined' ? `${window.location.origin}/s/${shopData.slug || shopData.id}` : ''}
+              </p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" className="flex-1 gap-2 bg-transparent">
+              <Button 
+                variant="outline" 
+                className="flex-1 gap-2 bg-transparent"
+                onClick={() => {
+                  const url = `${window.location.origin}/s/${shopData.slug || shopData.id}`;
+                  window.open(`https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=${encodeURIComponent(url)}`, '_blank');
+                }}
+              >
                 <Download className="h-4 w-4" />
-                Download
+                Download QR
               </Button>
-              <Button variant="outline" className="flex-1 gap-2 bg-transparent">
-                <RefreshCw className="h-4 w-4" />
-                Regenerate
+              <Button 
+                variant="outline" 
+                className="flex-1 gap-2 bg-transparent"
+                onClick={() => {
+                  const url = `${window.location.origin}/s/${shopData.slug || shopData.id}`;
+                  copyToClipboard(url);
+                }}
+              >
+                <Copy className="h-4 w-4" />
+                Copy Link
               </Button>
             </div>
             <div className="rounded-lg border border-border p-4">

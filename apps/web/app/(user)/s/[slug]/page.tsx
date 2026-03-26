@@ -1,31 +1,28 @@
-import dynamic from "next/dynamic";
 import { createClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
-
-const UserApp = dynamic(() => import("@/components/user/UserApp"), {
-  ssr: false,
-});
+import { ShopClient } from "./ShopClient";
 
 export default async function ShopPage({ 
   params 
 }: { 
-  params: { slug: string } 
+  params: Promise<{ slug: string }>
 }) {
+  const { slug } = await params;
   const supabase = await createClient();
   
   // 1. Fetch shop by slug
   const { data: shop, error: shopError } = await supabase
     .from('shops')
-    .select('id, name, address, phone, settings')
-    .eq('slug', params.slug)
+    .select('id, name, address, phone, settings, upi_id')
+    .eq('slug', slug)
     .single();
     
   if (shopError || !shop) {
     // Fallback search by ID if slug not found (for old links)
     const { data: shopById } = await supabase
       .from('shops')
-      .select('id, name, address, phone, settings')
-      .eq('id', params.slug)
+      .select('id, name, address, phone, settings, upi_id')
+      .eq('id', slug)
       .single();
       
     if (!shopById) return notFound();
@@ -44,12 +41,13 @@ async function ShopPageContent({ shop, supabase }: { shop: any, supabase: any })
 
   return (
     <main className="min-h-screen bg-gray-50">
-      <UserApp 
+      <ShopClient 
         shopId={shop.id} 
         shopName={shop.name} 
         shopAddress={shop.address} 
         shopPhone={shop.phone}
         shopSettings={shop.settings}
+        upiId={shop.upi_id}
         initialPricingRules={pricingRules.data || []}
         initialBindingOptions={bindingOptions.data || []}
       />

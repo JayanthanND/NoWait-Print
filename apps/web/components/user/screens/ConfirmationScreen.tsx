@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { CheckCircle, MapPin, Phone } from "lucide-react";
 import { Button } from "../Button";

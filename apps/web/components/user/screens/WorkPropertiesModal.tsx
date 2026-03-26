@@ -1,3 +1,5 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import { BottomSheet } from "../BottomSheet";
 import { DropdownWithPrice } from "../DropdownWithPrice";

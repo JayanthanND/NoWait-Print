@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { Work } from "@/lib/types";
 import { Card } from "../Card";

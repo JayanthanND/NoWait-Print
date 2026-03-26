@@ -1,3 +1,5 @@
+"use client";
+
 import { motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { CheckCircle, XCircle, Loader2 } from "lucide-react";

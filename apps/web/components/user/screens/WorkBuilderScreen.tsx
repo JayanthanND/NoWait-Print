@@ -1,3 +1,5 @@
+"use client";
+
 import { motion, AnimatePresence } from "motion/react";
 import { Plus, Settings2, Trash2, FileText, MoveDown } from "lucide-react";
 import { Card } from "../Card";

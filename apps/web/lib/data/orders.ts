@@ -11,6 +11,7 @@ export type OrderFile = {
   paperSize: "A4" | "A3" | "Letter" | "Legal";
   orientation: string;
   doubleSided: boolean;
+  filePath?: string;
 };
 
 export type Order = {

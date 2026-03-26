@@ -23,6 +23,7 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
+  Eye,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
@@ -259,9 +260,26 @@ export function OrderDetailDrawer({
                           </div>
                         </div>
                       </div>
-                      <span className="rounded bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
-                        #{index + 1}
-                      </span>
+                      <div className="flex flex-col items-end gap-2">
+                        <span className="rounded bg-secondary px-2 py-0.5 text-xs font-medium text-muted-foreground">
+                          #{index + 1}
+                        </span>
+                        {file.filePath && (
+                          <Button 
+                            variant="outline" 
+                            size="sm" 
+                            className="h-8 px-2 text-xs"
+                            onClick={() => {
+                              const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+                              const url = `${supabaseUrl}/storage/v1/object/public/prints/${file.filePath}`;
+                              window.open(url, '_blank');
+                            }}
+                          >
+                            <Eye className="mr-1 h-3 w-3" />
+                            View File
+                          </Button>
+                        )}
+                      </div>
                     </div>
                     <div className="mt-3 grid grid-cols-3 gap-2 text-xs">
                       <div className="rounded bg-secondary/50 px-2 py-1.5">
